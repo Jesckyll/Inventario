@@ -1,0 +1,82 @@
+
+entity Sucursal {
+	nombreSucursal String
+}
+
+entity Empresa {
+	nombreEmpresa String
+}
+
+entity Empleado {
+	nombre String,
+	apellido String,
+	email String,
+	numeroTelefono String,
+	fechaContratacion Instant
+}
+
+entity Insumo {
+	nombreInsumo String,
+    modeloInsumo String,
+    areaInsumo String,	
+    serialInsumo String,
+    procesadorInsumo String,
+    memoriaInsumo String,
+    discoInsumo String,
+    licenciaInsumo String
+    sistemaInsumo String,
+	licenciaoffice String,
+	powerAppId String,
+    foto ImageBlob,
+    tipoEquipo TipoEquipo
+}
+
+entity FotoInsumo{
+	imagen ImageBlob
+}
+
+entity InsumoPrestamo {
+    nombreInsumo  String,
+    fechaPrestamo Instant,
+	fechaDevolucion Instant,
+	estado Estado
+}
+
+enum Estado {
+    DISPONIBLE, UTILIZADO
+}
+
+enum TipoEquipo {
+	NOTEBOOK, ESCRITORIO, ALL IN ONE, DESKTOP, MINI DESKTOP, NETBOOK, PC, SERVIDOR, TABLET, ULTRABOOK, TORRE
+}
+
+relationship OneToOne {
+	Empresa{region} to Sucursal
+}
+
+relationship OneToMany{
+	Insumo to FotoInsumo{insumo}
+}
+relationship OneToMany{
+      Insumo to InsumoPrestamo{prestamo}
+}
+relationship OneToMany{
+	Empleado to InsumoPrestamo{empleado}
+}
+
+
+relationship ManyToOne {
+	InsumoPrestamo{manager} to Empresa
+}
+// defining multiple oneToOne relationships
+
+// Set pagination options
+paginate InsumoPrestamo with infinite-scroll
+paginate Insumo, Empleado, Empresa, Sucursal with pagination
+
+// Use Data Transfer Objects (DTO)
+// dto * with mapstruct
+
+// Set service options to all except few
+// Set an angular suffix
+// angularSuffix * with mySuffix
